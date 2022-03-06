@@ -12,6 +12,10 @@ Lógica a se pensar:
 2 - Será validado que é possível que o método generate da classe SimpleReport
     retorne a validade mais próxima
     - Percorrer a lista, trazendo o valor mais próximo
+3 - Será validado que é possível que o método generate da classe SimpleReport
+    retorne a empresa com maior estoque
+    - criar uma lista apenas de nomes da empresa e verificar qual é a
+    que tem maior quantidade
 """
 
 from datetime import datetime
@@ -38,14 +42,23 @@ class SimpleReport:
         date_list.sort()
         return date_list
 
+    @staticmethod
+    def search_by_stock_quantity(list_products):
+        list_companies = [product_element['nome_da_empresa']
+                          for product_element in list_products]
+        return max(list_companies)
+
     """criei o classmethod para que o método pudesse ser
     acessado sem instanciar a classe"""
     @classmethod
     def generate(cls, all_products):
         old_fabrication = cls.search_by_oldest_fabrication(all_products)
         near_fabrication = cls.search_by_nearest_fabrication(all_products)[0]
+        stock_company = cls.search_by_stock_quantity(all_products)
         string_return = (
             f"Data de fabricação mais antiga: {old_fabrication}\n"
             f"Data de validade mais próxima: {near_fabrication}\n"
+            f"Empresa com maior quantidade de "
+            f"produtos estocados: {stock_company}\n"
         )
         return string_return
