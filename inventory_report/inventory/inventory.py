@@ -29,9 +29,28 @@ Lógica:
     e verificar qual o tipo, chamando a def correspondente que importa
     aquele tipo de arquivo.
 3 - No caso do JSON , importar o json.load para tratar arquivos
+
+Requisito 5 - Passos a se seguir:
+1 - Criar dentro da classe Inventory uma estrutura capaz de ler um
+    arquivo XML.
+2 - Os demais pontos seguem o mesmo princípio dos requisitos anteriores
+
+Lógica:
+1 - consultei os seguintes links para saber como ler arquivos xml:
+https://raccoon.ninja/pt/dev-pt/manipulando-xml-com-python/
+https://docs.python.org/3/library/xml.etree.elementtree.html
+2 - Basicamente ler o arquivo utilizando o parse()
+3 - Pegando o elemento raiz da variável convertida anteriormente usando
+    getroot()
+4 - Criar uma variável que vai retornar a lista formatada
+5 - Para cada linha do root, criar uma dict que vai ser a tag (chave)
+    e text (valor)
+6 - Adicionar a dict à variável da lista formatada
+7 - Retornar a lista
 """
 import csv
 import json
+import xml.etree.ElementTree as ElementTree
 from inventory_report.reports.simple_report import SimpleReport
 from inventory_report.reports.complete_report import CompleteReport
 
@@ -50,13 +69,27 @@ class Inventory:
             file_data = json.load(json_file)
             return file_data
 
+    @staticmethod
+    def get_file_xml(path_file):
+        with open(path_file) as xml_file:
+            element = ElementTree.parse(xml_file)
+            root = element.getroot()
+            data = []
+            for child in root:
+                item = {}
+                for element_child in child:
+                    item[element_child.tag] = element_child.text
+                data.append(item)
+            return data
+
     @classmethod
     def import_data(cls, path_file, type_report):
-        data_converted = []
         if path_file.endswith('csv'):
             data_converted = cls.get_file_csv(path_file)
         elif path_file.endswith('json'):
             data_converted = cls.get_file_json(path_file)
+        else:
+            data_converted = cls.get_file_xml(path_file)
 
         if type_report == 'simples':
             return SimpleReport.generate(data_converted)
