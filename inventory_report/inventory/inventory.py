@@ -25,8 +25,13 @@ Lógica:
 1 - Primeiro criar uma def para cada fazer a tratativa de recuperar cada
     tipo de arquivo que vier (fazer uma refatoração aplicando princípios
     de solid)
+2 - O def import_data vai receber os valores de caminho do arquivo e tipo
+    e verificar qual o tipo, chamando a def correspondente que importa
+    aquele tipo de arquivo.
+3 - No caso do JSON , importar o json.load para tratar arquivos
 """
 import csv
+import json
 from inventory_report.reports.simple_report import SimpleReport
 from inventory_report.reports.complete_report import CompleteReport
 
@@ -38,12 +43,20 @@ class Inventory:
             file_data = csv.DictReader(csv_file, delimiter=',', quotechar='"')
             list_result = [data_element for data_element in file_data]
             return list_result
+        
+    @staticmethod
+    def get_file_json(path_file):
+        with open(path_file) as json_file:
+            file_data = json.load(json_file)
+            return file_data
     
     @classmethod   
     def import_data(cls, path_file, type_report):
         data_converted = []
         if path_file.endswith('csv'):
             data_converted = cls.get_file_csv(path_file)
+        elif path_file.endswith('json'):
+            data_converted = cls.get_file_json(path_file)
 
         if type_report == 'simples':
             return SimpleReport.generate(data_converted)
