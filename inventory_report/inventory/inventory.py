@@ -15,6 +15,16 @@ Lógica:
     - quando o tipo for 'simples', retorne o método generate de SR
     - quando for ćomposto, retorne generate de CR
 5 - passar a variável com a lista como parâmetro
+
+Requisito 4 - Passos a se seguir:
+1 - Criar dentro da classe Inventory uma estrutura capaz de ler um
+    arquivo JSON.
+2 - Os demais pontos seguem o mesmo princípio do requisito anterior
+
+Lógica:
+1 - Primeiro criar uma def para cada fazer a tratativa de recuperar cada
+    tipo de arquivo que vier (fazer uma refatoração aplicando princípios
+    de solid)
 """
 import csv
 from inventory_report.reports.simple_report import SimpleReport
@@ -22,12 +32,20 @@ from inventory_report.reports.complete_report import CompleteReport
 
 
 class Inventory:
-    def import_data(path_file, type_report):
+    @staticmethod
+    def get_file_csv(path_file):
         with open(path_file) as csv_file:
             file_data = csv.DictReader(csv_file, delimiter=',', quotechar='"')
             list_result = [data_element for data_element in file_data]
+            return list_result
+    
+    @classmethod   
+    def import_data(cls, path_file, type_report):
+        data_converted = []
+        if path_file.endswith('csv'):
+            data_converted = cls.get_file_csv(path_file)
 
         if type_report == 'simples':
-            return SimpleReport.generate(list_result)
+            return SimpleReport.generate(data_converted)
         elif type_report == 'completo':
-            return CompleteReport.generate(list_result)
+            return CompleteReport.generate(data_converted)
