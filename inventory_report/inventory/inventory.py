@@ -43,14 +43,14 @@ class Inventory:
             file_data = csv.DictReader(csv_file, delimiter=',', quotechar='"')
             list_result = [data_element for data_element in file_data]
             return list_result
-        
+
     @staticmethod
     def get_file_json(path_file):
         with open(path_file) as json_file:
             file_data = json.load(json_file)
             return file_data
-    
-    @classmethod   
+
+    @classmethod
     def import_data(cls, path_file, type_report):
         data_converted = []
         if path_file.endswith('csv'):
