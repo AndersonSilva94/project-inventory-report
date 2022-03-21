@@ -12,4 +12,4 @@ class XmlImporter(Importer):
         if path_file.endswith('xml'):
             return Inventory.get_file_xml(path_file)
         else:
-            raise ValueError('Arquivo Inválido')
+            raise ValueError('Arquivo inválido')

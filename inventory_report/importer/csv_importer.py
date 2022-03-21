@@ -18,4 +18,4 @@ class CsvImporter(Importer):
         if path_file.endswith('csv'):
             return Inventory.get_file_csv(path_file)
         else:
-            raise ValueError('Arquivo Inválido')
+            raise ValueError('Arquivo inválido')

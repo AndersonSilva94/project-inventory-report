@@ -12,4 +12,4 @@ class JsonImporter(Importer):
         if path_file.endswith('json'):
             return Inventory.get_file_json(path_file)
         else:
-            raise ValueError('Arquivo Inválido')
+            raise ValueError('Arquivo inválido')
