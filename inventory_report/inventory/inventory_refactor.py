@@ -22,7 +22,7 @@ class InventoryRefactor:
 
     def import_data(self, path_file, type_report="simples"):
         report_class = SimpleReport
-        if type_report == "simples":
+        if type_report == "completo":
             report_class = CompleteReport
         self.data += self.importer.import_data(path_file)
         return report_class.generate(self.data)
